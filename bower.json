@@ -1,0 +1,17 @@
+{
+  "name": "presentation-a-bespoke-ecosystem",
+  "version": "0.0.0",
+  "authors": [
+    "Mark Dalgleish"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "devDependencies": {
+    "prism": "gh-pages"
+  }
+}

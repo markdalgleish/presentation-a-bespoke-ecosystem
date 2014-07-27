@@ -1,0 +1,477 @@
+doctype html
+html
+  head
+  meta(charset='utf-8')
+  meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+  title A Bespoke Ecosystem
+
+  link(rel='stylesheet', type='text/css', href='build/build.css')
+
+  body
+
+    article
+
+      section
+        img.avatar(src='images/profile.jpg')
+        br
+        h1.name Mark Dalgleish
+
+      section
+        img.melbjs(src='images/melbjs.png')
+
+      section
+        h1 Bespoke.js
+
+      section
+        h1 &ldquo;A Bespoke Ecosystem&rdquo;
+        h2 On front-end modularity
+
+      section
+        h1 Why Bespoke?
+
+      section
+        h1 Bespoke.js is a blank canvas
+
+      section
+        h1 Most frameworks are<br />busy <strong>adding</strong> features
+
+      section.invert-bullets
+        h1 Bespoke features over time:
+        .bullet
+        ul.no-bullets
+          li Manages deck state
+          li.bullet Handles keyboard input
+          li.bullet Handles touch input
+          li.bullet Adds CSS classes
+          li Allows plugins
+
+      section
+        h1 Plugin first design
+
+      section
+        .bullet
+        pre.language-javascript
+          code.
+            bespoke.from('#presentation', [
+              classes(),
+              keys(),
+              touch(),
+              bullets('li, .bullet'),
+              etc...
+            ]);
+
+      section
+        h1.bullet Every plugin is a seperate module
+        pre.language-javascript.bullet
+          code.
+            var bespoke = require('bespoke'),
+                classes = require('bespoke-classes'),
+                keys = require('bespoke-keys'),
+                touch = require('bespoke-touch'),
+                bullets = require('bespoke-bullets');
+
+      section
+        h1.bullet Plugins are just functions
+        pre.language-javascript.bullet
+          code.
+            module.exports = function(options) {
+              return function(deck) {
+                deck.next();
+                deck.prev();
+                // etc&hellip;
+              };
+            };
+
+      section
+        h1.bullet The API is inherently modular
+        ul
+          li Using it teaches you how it works
+          li No black box, small approachable modules
+          li Users are encouraged to view source
+
+      section
+        h1.bullet Great for maintainers
+        ul
+          li Mistaken bug reports are minimised
+          li Bug reports tend to go to the right place
+          li Managing versions is simplified
+
+      section
+        h1
+          em &ldquo;I just want some boilerplate&rdquo;
+        h2 Almost everyone
+
+      section
+        h1.bullet Competing concerns
+        h2.bullet Modularity vs Ease of Use
+
+      section
+        .bullet
+        h1 My solution? <span class="bullet">Yeoman</span>
+
+      section(data-bespoke-state='emphatic')
+        h1 generator-bespoke
+
+      section
+        pre.language-javascript.bullet
+          code.
+            $ npm install -g generator-bespoke
+
+            $ yo bespoke
+
+      section(data-bespoke-state='background-black')
+        img(src='images/generator-bespoke.png', style='width: 640px')
+
+      section(data-bespoke-state='background-black')
+        img(src='images/generator-bespoke-install.png', style='height: 400px')
+
+      section
+        h1.bullet index.jade
+        pre.language-clike.bullet
+          code.
+            article
+
+              section
+                h1 Slide 1
+
+              section
+                h1 Slide 2
+
+      section
+        h1.bullet main.js
+        pre.language-javascript.bullet
+          code.
+            bespoke.from('article', [
+              // plugins&hellip;
+            ]);
+
+      section
+        ul
+          li Gulp build system (previously Grunt)
+          li Preview server with LiveReload
+          li Style sheet to get started
+          li GitHub Pages deployment task
+
+      section
+        h1.bullet Modularity paid off
+        ul
+          li Generator is boilerplate + module selector
+          li Wouldn&rsquo;t work if Bespoke was a black box
+          li You can ignore the generator if you&rsquo;re too cool
+
+      section
+        h1.bullet Yeoman jump-started presentations
+        h2.bullet What about plugins?
+
+      section(data-bespoke-state='emphatic')
+        h1 generator-bespokeplugin
+
+      section
+        h1 It worked
+
+      section
+        h1 My favourite plugin:
+
+      section(data-bespoke-hash='camera', data-camera='fullscreen')
+        img.avatar(src='images/matteo.jpeg')
+        h1
+          a(href='https://github.com/mcollina/bespoke-camera', target='_blank') bespoke-camera
+        h2 By Matteo Collina
+
+      section
+        h1 Add camera feed to slide
+        h2 Just a simple data attribute
+        pre.language-markup.bullet
+          code.
+            &lt;section data-camera="fullscreen"&gt;
+
+      section
+        h1.bullet Lots of Bespoke presentations
+        ul
+          li Many use the &ldquo;starter&rdquo; styles
+          li Many copy other custom styles
+
+      section
+        h1 Something&rsquo;s missing...
+
+      section
+        img.avatar(src='images/ryan.jpeg')
+        h1 &ldquo;The only thing missing to make Bespoke.js perfect is theming&rdquo;
+        h2 @ryanseddon
+
+      section
+        h1 The problem?
+
+      section
+        h1.bullet &ldquo;Themes&rdquo; are more than CSS
+        ul
+          li Themes need to be composed of other plugins
+          li The plugin API was getting in the way
+
+      section
+        h1 v0.x API
+        pre.language-javascript.bullet
+          code.
+            bespoke.from('#deck', {
+              keys: true,
+              touch: true,
+              bullets: 'li, .bullet'
+            });
+
+      section
+        h1 Plugins sit on global &lsquo;bespoke&rsquo;
+        pre.language-javascript.bullet
+          code.
+            // bespoke.js
+            var bespoke = &hellip;;
+
+            // bespoke-keys.js
+            bespoke.plugins.keys = function(deck, options) {
+              &hellip;
+            };
+
+      section
+        h1 Flat dependency graph
+        pre.language-javascript.bullet
+          code.
+            {host}
+              |- {plugin}
+              |- {plugin}
+              |- {plugin}
+              |- {plugin}
+
+      section
+        h1 jQuery works like this
+        pre.language-javascript
+          code.
+            var $ = ...;
+
+            // Plugins piggy back onto a host object
+            $.prototype.plugin = function() {
+              this; // collection;
+            };
+
+      section
+        h1 Grunt works like this:
+        pre.language-javascript.bullet
+          code.
+            grunt.loadNpmModules('grunt-jade');
+
+            grunt.initConfig({
+              jade: {
+                src: 'src/*.jade',
+                ...
+              }
+            });
+
+      section
+        h1.bullet The problem with these APIs?
+        h2.bullet They're not composable
+
+      section
+        h1.bullet Grunt switched paradigms
+        ul
+          li Originally it included a suite of &ldquo;plugins&rdquo;
+          li Modules instead of a large black box
+          li The API didn't change with it&hellip;
+
+      section
+        h1.bullet Why Gulp seems easier
+        ul
+          li Modular from the start
+          li The API fits the paradigm
+
+      section
+        pre.language-javascript.bullet
+          code.
+            var jade = require('gulp-jade');
+
+            return gulp.src('src/*.jade')
+              // Explicitly pass plugin
+              // reference to stream:
+              .pipe(jade())
+              .pipe(gulp.dest('dist'));
+
+      section
+        h1 Bespoke had the same problem
+        h2 Time to change the API
+
+      section
+        h1 My answer?
+
+      section
+        img(src='images/browserify.png')
+
+      section(data-bespoke-state='emphatic')
+        h1
+          .bullet Browserify
+          .bullet +
+          .bullet brfs
+          .bullet +
+          .bullet insert-css
+
+      section(data-bespoke-state='emphatic')
+        img.avatar(src='images/substack.png')
+        hr
+        h1 All by Substack
+
+      section
+        h1 Browserify
+        h2.bullet Require in the browser
+        pre.language-javascript.bullet
+          code.
+            var bespoke = require('bespoke');
+
+      section
+        h1 Users explicitly require all plugins
+        h2.bullet No more global objects
+        pre.language-javascript.bullet
+          code.
+            var progress = require('bespoke-progress');
+
+      section
+        h1 How does Browserify help<br />with theme styles?
+
+      section
+        h1 Transforms
+
+      section
+        h1 brfs
+        h2 Transform to inline file contents
+
+      section
+        h1 brfs compiles this:
+        pre.language-javascript
+          code.
+            var css = fs.readFileSync(__dirname +
+                        '/theme.css', 'utf8');
+
+      section
+        h1 Into this:
+        pre.language-javascript
+          code.
+            var css = '.bespoke-parent{ &hellip;';
+
+      section
+        h1 insert-css
+        h2.bullet Inserts a string of CSS to the head
+        pre.language-javascript.bullet
+          code.
+            var css = '.bespoke-parent{&hellip;';
+            insertCss(css, { prepend: true });
+
+      section
+        h1 Writing a theme:
+
+      section
+        pre.language-javascript
+          code.
+            module.exports = function() {
+              // Prepend styles:
+              var css = fs.readFileSync(&hellip;, 'utf8');
+              insertCss(css, { prepend: true });
+
+              // Include plugins:
+              return function(deck) {
+                classes()(deck);
+                dir()(deck);
+              };
+            };
+
+      section
+        h1 Plugins can be composed
+        pre.language-javascript.bullet
+          code.
+            {host}
+              |- {plugin}
+                |- {plugin}
+                  |- {plugin}
+              |- {plugin}
+                |- {plugin}
+                |- {plugin}
+
+      section
+        h1 Installing a theme
+        pre.language-javascript
+          code.
+            $ npm install bespoke-theme-cube
+
+      section
+        h1 Using a theme
+        pre.language-javascript
+          code.
+            var cube = require('bespoke-theme-cube');
+        pre.language-javascript
+          code.
+            bespoke.from('#deck', [
+              cube(),
+              keys(),
+              touch()
+            ]);
+
+      section(data-bespoke-state='emphatic')
+        h1.bullet generator-bespoketheme
+        ul
+          li Gulp build system
+          li Browserify + brfs + insert-css
+          li Stylus, normalize and autoprefixer
+          li GitHub Pages deployment task for demo
+
+      section
+        h1.bullet JavaScript centric modules
+        ul
+          li Manages DOM nodes
+          li Inserts style/link/script tags
+          li Dynamically inserts assets
+
+      section
+        h1 CSS can't touch this
+
+      section
+        h1.bullet Separate your concerns,<br />not your technologies
+        ul
+          li CSS in your JS bundle is okay
+          li Front-end code on npm is okay too
+          li Even if it's just CSS (check out Normalize.css)
+
+      section
+        h1.bullet The new normal
+        ul
+          li HTML templates compiled to JS (old news)
+          li Brfs / WebPack&rsquo;s loader system
+          li Web components inserting styles into Shadow DOM
+
+      section
+        h1 The future&hellip;?
+
+      section
+        h1.bullet Don't build a monolith&mdash;<br />craft an ecosystem
+        h2.bullet It may surprise you where it leads&hellip;
+
+      section
+        img.avatar(src='images/angelina.jpeg')
+        h1
+          a(href='https://github.com/afabbro/mozdevtools-presentation', target='_blank') mozdevtools-presentation
+        h2 By Mozilla&rsquo;s Angelina Fabbro
+
+      section
+        h1
+          a(href='http://strut.io', target='_blank') Strut.io
+        h2 Visual slide editor for Bespoke &amp; Impress
+        br
+        img(src='images/strut.png', style='width: 380px')
+
+      section
+        h1 Join the ecosystem:
+        pre.language-javascript
+          code.
+            $ npm install -g generator-bespoke@beta
+
+            $ yo bespoke
+
+      section
+        img.avatar(src='images/profile.jpg')
+        h1 Thanks
+        h2 @markdalgleish
+
+    script(src='build/build.js')
