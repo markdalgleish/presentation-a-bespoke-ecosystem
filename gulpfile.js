@@ -2,7 +2,7 @@ var pkg = require('./package.json'),
   gulp = require('gulp'),
   gutil = require('gulp-util'),
   plumber = require('gulp-plumber'),
-  clean = require('gulp-clean'),
+  rimraf = require('gulp-rimraf'),
   rename = require('gulp-rename'),
   connect = require('gulp-connect'),
   browserify = require('gulp-browserify'),
@@ -11,6 +11,7 @@ var pkg = require('./package.json'),
   stylus = require('gulp-stylus'),
   autoprefixer = require('gulp-autoprefixer'),
   csso = require('gulp-csso'),
+  cache = require('gulp-cache'),
   imagemin = require('gulp-imagemin'),
   pngcrush = require('imagemin-pngcrush'),
   through = require('through'),
@@ -19,7 +20,7 @@ var pkg = require('./package.json'),
   path = require('path'),
   isDist = process.argv.indexOf('serve') === -1;
 
-gulp.task('js', function() {
+gulp.task('js', ['clean:js'], function() {
   return gulp.src('src/scripts/main.js')
     .pipe(isDist ? through() : plumber())
     .pipe(browserify({ transform: ['debowerify'], debug: !isDist }))
@@ -29,7 +30,7 @@ gulp.task('js', function() {
     .pipe(connect.reload());
 });
 
-gulp.task('html', function() {
+gulp.task('html', ['clean:html'], function() {
   return gulp.src('src/index.jade')
     .pipe(isDist ? through() : plumber())
     .pipe(jade({ pretty: true }))
@@ -38,12 +39,13 @@ gulp.task('html', function() {
     .pipe(connect.reload());
 });
 
-gulp.task('css', function() {
+gulp.task('css', ['clean:css'], function() {
   return gulp.src('src/styles/main.styl')
     .pipe(isDist ? through() : plumber())
     .pipe(stylus({
+      // Allow CSS to be imported from bower_components
       'include css': true,
-      'paths': ['./node_modules', './bower_components']
+      'paths': ['./bower_components']
     }))
     .pipe(autoprefixer('last 2 versions', { map: false }))
     .pipe(isDist ? csso() : through())
@@ -54,29 +56,43 @@ gulp.task('css', function() {
 
 gulp.task('images', ['clean:images'], function() {
   return gulp.src('src/images/**/*')
-    .pipe(isDist ? imagemin({ progressive: true, use: [pngcrush()] }) : through())
+    .pipe(isDist ? cache(imagemin({ progressive: true, interlaced: true, use: [pngcrush()] })) : through())
     .pipe(gulp.dest('dist/images'))
     .pipe(connect.reload());
 });
 
 gulp.task('clean', function() {
   return gulp.src('dist')
-    .pipe(clean());
+    .pipe(rimraf());
+});
+
+gulp.task('clean:html', function() {
+  return gulp.src('dist/index.html')
+    .pipe(rimraf());
+});
+
+gulp.task('clean:js', function() {
+  return gulp.src('dist/build/build.js')
+    .pipe(rimraf());
+});
+
+gulp.task('clean:css', function() {
+  return gulp.src('dist/build/build.css')
+    .pipe(rimraf());
 });
 
 gulp.task('clean:images', function() {
-  return gulp.src('dist/images', { read: false })
-    .pipe(clean());
+  return gulp.src('dist/images')
+    .pipe(rimraf());
 });
 
 gulp.task('connect', ['build'], function(done) {
   connect.server({
     root: 'dist',
-    port: 8001,
-    livereload: { port: 35728 }
+    livereload: true
   });
 
-  opn('http://localhost:8001', done);
+  opn('http://localhost:8080', done);
 });
 
 gulp.task('watch', function() {
@@ -90,12 +106,9 @@ gulp.task('watch', function() {
 });
 
 gulp.task('deploy', ['build'], function(done) {
-  ghpages.publish({
-    base: path.join(__dirname, 'dist'),
-    logger: gutil.log
-  }, done);
+  ghpages.publish(path.join(__dirname, 'dist'), { logger: gutil.log }, done);
 });
 
 gulp.task('build', ['js', 'html', 'css', 'images']);
 gulp.task('serve', ['connect', 'watch']);
-gulp.task('default', ['clean', 'build']);
+gulp.task('default', ['build']);
