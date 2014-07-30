@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>A Bespoke Ecosystem</title>
+  <link rel="stylesheet" type="text/css" href="build/build.css">
+  <body>
+    <article>
+      <section><img src="images/profile.jpg" class="avatar"><br>
+        <h1 class="name">Mark Dalgleish</h1>
+      </section>
+      <section><img src="images/melbjs.png" class="melbjs"></section>
+      <section>
+        <h1>Bespoke.js</h1>
+      </section>
+      <section>
+        <h1>&ldquo;A Bespoke Ecosystem&rdquo;</h1>
+        <h2>On front-end modularity</h2>
+      </section>
+      <section>
+        <h1>Why Bespoke?</h1>
+      </section>
+      <section>
+        <h1>Bespoke.js is a blank canvas</h1>
+      </section>
+      <section>
+        <h1>Most frameworks are<br />busy <strong>adding</strong> features</h1>
+      </section>
+      <section class="invert-bullets">
+        <h1>Bespoke features over time:</h1>
+        <div class="bullet"></div>
+        <ul class="no-bullets">
+          <li>Manages deck state</li>
+          <li class="bullet">Handles keyboard input</li>
+          <li class="bullet">Handles touch input</li>
+          <li class="bullet">Adds CSS classes</li>
+          <li>Allows plugins</li>
+        </ul>
+      </section>
+      <section>
+        <h1>Plugin first design</h1>
+      </section>
+      <section>
+        <div class="bullet"></div>
+        <pre class="language-javascript"><code>bespoke.from('#presentation', [
+  classes(),
+  keys(),
+  touch(),
+  bullets('li, .bullet'),
+  etc&hellip;
+]);
+</code></pre>
+      </section>
+      <section>
+        <h1 class="bullet">Every plugin is a separate module</h1>
+        <pre class="language-javascript bullet"><code>var bespoke = require('bespoke'),
+    classes = require('bespoke-classes'),
+    keys = require('bespoke-keys'),
+    touch = require('bespoke-touch'),
+    bullets = require('bespoke-bullets');
+    </code></pre>
+      </section>
+      <section>
+        <h1 class="bullet">Plugins are just functions</h1>
+        <pre class="language-javascript bullet"><code>module.exports = function(options) {
+  return function(deck) {
+    deck.next();
+    deck.prev();
+    // etc&hellip;
+  };
+};
+</code></pre>
+      </section>
+      <section>
+        <h1 class="bullet">The API is inherently modular</h1>
+        <ul>
+          <li>Using it teaches you how it works</li>
+          <li>No black box, small approachable modules</li>
+          <li>Users are encouraged to view source</li>
+        </ul>
+      </section>
+      <section>
+        <h1 class="bullet">Great for maintainers</h1>
+        <ul>
+          <li>Removes &ldquo;fear of the imperfect solution&rdquo;</li>
+          <li>Managing versions is simplified</li>
+          <li>Mistaken bug reports are minimised</li>
+          <li>Bug reports tend to go to the right place</li>
+        </ul>
+      </section>
+      <section>
+        <h1><em>&ldquo;I just want some boilerplate&rdquo;</em></h1>
+        <h2>Almost everyone</h2>
+      </section>
+      <section>
+        <h1 class="bullet">Competing concerns</h1>
+        <h2 class="bullet">Modularity vs Ease of Use</h2>
+      </section>
+      <section>
+        <div class="bullet"></div>
+        <h1>My solution? <span class="bullet">Yeoman</span></h1>
+      </section>
+      <section data-bespoke-state="emphatic">
+        <h1>generator-bespoke</h1>
+      </section>
+      <section>
+        <pre class="language-javascript bullet"><code>$ npm install -g generator-bespoke
+
+$ yo bespoke
+</code></pre>
+      </section>
+      <section data-bespoke-state="background-black"><img src="images/generator-bespoke.png" style="width: 640px"></section>
+      <section data-bespoke-state="background-black"><img src="images/generator-bespoke-install.png" style="height: 400px"></section>
+      <section>
+        <h1 class="bullet">index.jade</h1>
+        <pre class="language-clike bullet"><code>article
+
+  section
+    h1 Slide 1
+    
+  section
+    h1 Slide 2
+    </code></pre>
+      </section>
+      <section>
+        <h1 class="bullet">main.js</h1>
+        <pre class="language-javascript bullet"><code>bespoke.from('article', [
+  // plugins&hellip;
+]);
+</code></pre>
+      </section>
+      <section>
+        <ul>
+          <li>Gulp build system (previously Grunt)</li>
+          <li>Preview server with LiveReload</li>
+          <li>Style sheet to get started</li>
+          <li>GitHub Pages deployment task</li>
+        </ul>
+      </section>
+      <section>
+        <h1 class="bullet">Modularity paid off</h1>
+        <ul>
+          <li>Generator is boilerplate + module selector</li>
+          <li>Wouldn&rsquo;t work if Bespoke was a black box</li>
+          <li>You can ignore the generator if you&rsquo;re too cool</li>
+        </ul>
+      </section>
+      <section>
+        <h1 class="bullet">Yeoman jump-started presentations</h1>
+        <h2 class="bullet">What about plugins?</h2>
+      </section>
+      <section data-bespoke-state="emphatic">
+        <h1>generator-bespokeplugin</h1>
+      </section>
+      <section>
+        <h1>It worked</h1>
+      </section>
+      <section>
+        <h1>My favourite plugin:</h1>
+      </section>
+      <section data-bespoke-hash="camera" data-camera="fullscreen"><img src="images/matteo.jpeg" class="avatar">
+        <h1><a href="https://github.com/mcollina/bespoke-camera" target="_blank">bespoke-camera</a></h1>
+        <h2>By Matteo Collina</h2>
+      </section>
+      <section>
+        <h1>Add camera feed to slide</h1>
+        <h2>Just a simple data attribute</h2>
+        <pre class="language-markup bullet"><code>&lt;section data-camera="fullscreen"&gt;
+</code></pre>
+      </section>
+      <section>
+        <h1 class="bullet">Lots of Bespoke presentations</h1>
+        <ul>
+          <li>Many use the &ldquo;starter&rdquo; styles</li>
+          <li>Many copy other custom styles</li>
+        </ul>
+      </section>
+      <section>
+        <h1>Something&rsquo;s missing&hellip;</h1>
+      </section>
+      <section><img src="images/ryan.jpeg" class="avatar">
+        <h1>&ldquo;The only thing missing to make Bespoke.js perfect is theming&rdquo;</h1>
+        <h2>@ryanseddon</h2>
+      </section>
+      <section>
+        <h1>The problem?</h1>
+      </section>
+      <section>
+        <h1 class="bullet">&ldquo;Themes&rdquo; are more than CSS</h1>
+        <ul>
+          <li>Themes need to be composed of other plugins</li>
+          <li>The plugin API was getting in the way</li>
+        </ul>
+      </section>
+      <section>
+        <h1>v0.x API</h1>
+        <pre class="language-javascript bullet"><code>bespoke.from('#deck', {
+  keys: true,
+  touch: true,
+  bullets: 'li, .bullet'
+});
+</code></pre>
+      </section>
+      <section>
+        <h1>Plugins sit on global &lsquo;bespoke&rsquo;</h1>
+        <pre class="language-javascript bullet"><code>// bespoke.js
+var bespoke = &hellip;;
+
+// bespoke-keys.js
+bespoke.plugins.keys = function(deck, options) {
+  &hellip;
+};
+</code></pre>
+      </section>
+      <section>
+        <h1>Flat dependency graph</h1>
+        <pre class="language-javascript bullet"><code>{host}
+  |- {plugin}
+  |- {plugin}
+  |- {plugin}
+  |- {plugin}
+  </code></pre>
+      </section>
+      <section>
+        <h1>jQuery works like this</h1>
+        <pre class="language-javascript"><code>var $ = &hellip;;
+
+// Plugins piggy back onto a host object
+$.prototype.plugin = function() {
+  this; // collection;
+};
+</code></pre>
+      </section>
+      <section>
+        <h1>Grunt works like this:</h1>
+        <pre class="language-javascript bullet"><code>grunt.loadNpmModules('grunt-jade');
+
+grunt.initConfig({
+  jade: {
+    src: 'src/*.jade',
+    &hellip;
+  }
+});
+</code></pre>
+      </section>
+      <section>
+        <h1 class="bullet">The problem with these APIs?</h1>
+        <h2 class="bullet">They're not composable</h2>
+      </section>
+      <section>
+        <h1 class="bullet">Grunt switched paradigms</h1>
+        <ul>
+          <li>Originally it included a suite of &ldquo;plugins&rdquo;</li>
+          <li>Modules instead of a large black box</li>
+          <li>The API didn&rsquo;t change with it&hellip;</li>
+        </ul>
+      </section>
+      <section>
+        <h1 class="bullet">Why Gulp seems easier</h1>
+        <ul>
+          <li>Modular from the start</li>
+          <li>The API fits the paradigm</li>
+        </ul>
+      </section>
+      <section>
+        <pre class="language-javascript bullet"><code>var jade = require('gulp-jade');
+
+return gulp.src('src/*.jade')
+  // Explicitly pass plugin
+  // reference to stream:
+  .pipe(jade())
+  .pipe(gulp.dest('dist'));
+  </code></pre>
+      </section>
+      <section>
+        <h1>Bespoke had the same problem</h1>
+        <h2>Time to change the API</h2>
+      </section>
+      <section>
+        <h1>My answer?</h1>
+      </section>
+      <section><img src="images/browserify.png"></section>
+      <section data-bespoke-state="emphatic">
+        <h1>
+          <div class="bullet">Browserify</div>
+          <div class="bullet">+</div>
+          <div class="bullet">brfs</div>
+          <div class="bullet">+</div>
+          <div class="bullet">insert-css</div>
+        </h1>
+      </section>
+      <section data-bespoke-state="emphatic"><img src="images/substack.png" class="avatar">
+        <hr>
+        <h1>All by Substack</h1>
+      </section>
+      <section>
+        <h1>Browserify</h1>
+        <h2 class="bullet">Require in the browser</h2>
+        <pre class="language-javascript bullet"><code>var bespoke = require('bespoke');
+</code></pre>
+      </section>
+      <section>
+        <h1>Users explicitly require all plugins</h1>
+        <h2 class="bullet">No more global objects</h2>
+        <pre class="language-javascript bullet"><code>var progress = require('bespoke-progress');
+</code></pre>
+      </section>
+      <section>
+        <h1>How does Browserify help<br />with theme styles?</h1>
+      </section>
+      <section>
+        <h1>Transforms</h1>
+      </section>
+      <section>
+        <h1>brfs</h1>
+        <h2>Transform to inline file contents</h2>
+      </section>
+      <section>
+        <h1>brfs compiles this:</h1>
+        <pre class="language-javascript"><code>var css = fs.readFileSync(__dirname +
+            '/theme.css', 'utf8');
+            </code></pre>
+      </section>
+      <section>
+        <h1>Into this:</h1>
+        <pre class="language-javascript"><code>var css = '.bespoke-parent{ &hellip;';
+</code></pre>
+      </section>
+      <section>
+        <h1>insert-css</h1>
+        <h2 class="bullet">Inserts a string of CSS to the head</h2>
+        <pre class="language-javascript bullet"><code>var css = '.bespoke-parent{&hellip;';
+insertCss(css, { prepend: true });
+</code></pre>
+      </section>
+      <section>
+        <h1>Writing a theme:</h1>
+      </section>
+      <section>
+        <pre class="language-javascript"><code>module.exports = function() {
+  // Prepend styles:
+  var css = fs.readFileSync(&hellip;, 'utf8');
+  insertCss(css, { prepend: true });
+  
+  // Include plugins:
+  return function(deck) {
+    classes()(deck);
+    dir()(deck);
+  };
+};
+</code></pre>
+      </section>
+      <section>
+        <h1>Plugins can be composed</h1>
+        <pre class="language-javascript bullet"><code>{host}
+  |- {plugin}
+    |- {plugin}
+      |- {plugin}
+  |- {plugin}
+    |- {plugin}
+    |- {plugin}
+    </code></pre>
+      </section>
+      <section>
+        <h1>Installing a theme</h1>
+        <pre class="language-javascript"><code>$ npm install bespoke-theme-cube
+</code></pre>
+      </section>
+      <section>
+        <h1>Using a theme</h1>
+        <pre class="language-javascript"><code>var cube = require('bespoke-theme-cube');</code></pre>
+        <pre class="language-javascript"><code>bespoke.from('#deck', [
+  cube(),
+  keys(),
+  touch()
+]);
+</code></pre>
+      </section>
+      <section data-bespoke-state="emphatic">
+        <h1 class="bullet">generator-bespoketheme</h1>
+        <ul>
+          <li>Gulp build system</li>
+          <li>Browserify + brfs + insert-css</li>
+          <li>Stylus, normalize and autoprefixer</li>
+          <li>GitHub Pages deployment task for demo</li>
+        </ul>
+      </section>
+      <section>
+        <h1 class="bullet">JavaScript centric modules</h1>
+        <ul>
+          <li>Manages DOM nodes</li>
+          <li>Inserts style/link/script tags</li>
+          <li>Dynamically inserts assets</li>
+        </ul>
+      </section>
+      <section>
+        <h1>CSS can&rsquo;t touch this</h1>
+      </section>
+      <section>
+        <h1 class="bullet">Separate your concerns,<br />not your technologies</h1>
+        <ul>
+          <li>CSS in your JS bundle is okay</li>
+          <li>Front-end code on npm is okay too</li>
+          <li>Even if it&rsquo;s just CSS (check out Normalize.css)</li>
+        </ul>
+      </section>
+      <section>
+        <h1 class="bullet">The new normal</h1>
+        <ul>
+          <li>HTML templates compiled to JS (old news)</li>
+          <li>Brfs / WebPack&rsquo;s loader system</li>
+          <li>Web components inserting styles into Shadow DOM</li>
+        </ul>
+      </section>
+      <section>
+        <h1>The future&hellip;?</h1>
+      </section>
+      <section>
+        <h1 class="bullet">Don&rsquo;t build a monolith&mdash;<br />craft an ecosystem</h1>
+        <h2 class="bullet">It may surprise you where it leads&hellip;</h2>
+      </section>
+      <section><img src="images/angelina.jpeg" class="avatar">
+        <h1><a href="https://github.com/afabbro/mozdevtools-presentation" target="_blank">mozdevtools-presentation</a></h1>
+        <h2>By Mozilla&rsquo;s Angelina Fabbro</h2>
+      </section>
+      <section>
+        <h1><a href="http://strut.io" target="_blank">Strut.io</a></h1>
+        <h2>Visual slide editor for Bespoke &amp; Impress</h2><br><img src="images/strut.png" style="width: 380px">
+      </section>
+      <section>
+        <h1>Join the ecosystem:</h1>
+        <pre class="language-javascript"><code>$ npm install -g generator-bespoke
+
+$ yo bespoke
+</code></pre>
+      </section>
+      <section><img src="images/profile.jpg" class="avatar">
+        <h1>Thanks</h1>
+        <h2>@markdalgleish</h2>
+      </section>
+    </article>
+    <script src="build/build.js"></script>
+  </body>
+</html>
