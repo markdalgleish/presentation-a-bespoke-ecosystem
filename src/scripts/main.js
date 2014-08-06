@@ -7,7 +7,7 @@ var bespoke = require('bespoke'),
   state = require('bespoke-state'),
   hash = require('bespoke-hash'),
   progress = require('bespoke-progress'),
-  camera = require('./camera');
+  camera = require('bespoke-camera');
 
 bespoke.from('article', [
   voltaire(),
